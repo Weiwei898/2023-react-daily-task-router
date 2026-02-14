@@ -1,5 +1,5 @@
 import './App.css';
-import { HashRouter, NavLink, Routes, Route, useNavigate } from 'react-router-dom';
+import { HashRouter, NavLink, Routes, Route, useNavigate, Outlet, useParams, useLocation } from 'react-router-dom';
 
 // useNavigate 這個 Hook，useNavigate() 可以用在路由的切換，舉例像是進入到個人資訊頁面會先檢查是否有登入，沒有登入的話就會導回 /login。
 const Logout = () => {
@@ -30,6 +30,28 @@ const Login = () => {
 const Register = () => {
   return <p>這是註冊頁面</p>;
 };
+const Post = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  // 邏輯：檢查目前網址是否包含 '/post/post123'，如果包含代表現在是「打開」的狀態
+  const isDetailOpen = location.pathname.includes('/post/post123');
+
+  return (
+    <div>
+      <h3>Post 詳細資料頁面</h3>
+      {/* 將連結放在這裡，點擊按鈕後後網址變成 /post/post123，下方的 Outlet 就會顯示 PostId 元件 */}
+      {/* 邏輯：如果是打開的(isDetailOpen為真)，點擊就導回 /post (關閉)；否則就導向 /post/post123 (打開) */}
+      <button onClick={() => isDetailOpen ? navigate('/post', { replace: true }) : navigate('/post/post123')}>
+        {isDetailOpen ? "關閉詳細頁面" : "Post 詳細頁面"}
+      </button>
+      <Outlet />
+    </div>
+  );
+};
+const PostId = () => {
+  let { postId } = useParams();
+  return <p>Post ID 是 {postId}</p>;
+};
 
 function App() {
   return (
@@ -48,6 +70,9 @@ function App() {
           <NavLink to="/todo">
             <p>Todo 頁面</p>
           </NavLink>
+          <NavLink to="/post">
+            <p>Post 頁面</p>
+          </NavLink>
         </div>
         {/* Routes, Route 練習區 */}
         <Routes>
@@ -55,6 +80,9 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/todo" element={<Todo />} />
+          <Route path="/post" element={<Post />}>
+            <Route path=":postId" element={<PostId />} />
+          </Route>
           {/* 404 路由：當網址找不到對應路徑時顯示 */}
           <Route path="*" element={<p>找不到頁面</p>} />
         </Routes>

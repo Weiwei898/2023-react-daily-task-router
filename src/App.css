@@ -16,6 +16,8 @@
 }
 .nav-link a.active {
   background-color:#4f94cc;
+  color: red; 
+  font-weight: bold;
 }
 .nav-link a:hover, .nav-link a:focus, .nav-link a:active {
   background-color:#4682b4;
