@@ -1,6 +1,15 @@
 import './App.css';
 import { HashRouter, NavLink, Routes, Route, useNavigate, Outlet, useParams, useLocation } from 'react-router-dom';
-
+/*
+  React Router 核心三大 Hook 總結：
+  1. useNavigate: 命令式跳轉。適合用在「按鈕點擊」後要跑邏輯再切換頁面的情境。
+  2. useParams: 抓取網址上的「動態變數」。如 /post/:postId，冒號後面的東西就是變數名。
+  3. useLocation: 監聽目前「人在哪裡」。回傳一個物件包含目前完整的 pathname。
+  
+  巢狀路由 (Nested Routes):
+  - 在 Routes 中將 Route 寫在另一個 Route 裡面。
+  - 母元件必須使用 <Outlet /> 來預留子元件顯示的位置。
+*/
 // useNavigate 這個 Hook，useNavigate() 可以用在路由的切換，舉例像是進入到個人資訊頁面會先檢查是否有登入，沒有登入的話就會導回 /login。
 const Logout = () => {
   const navigate = useNavigate();
