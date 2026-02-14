@@ -1,8 +1,28 @@
 import './App.css';
-import { HashRouter, NavLink, Routes, Route } from 'react-router-dom';
+import { HashRouter, NavLink, Routes, Route, useNavigate } from 'react-router-dom';
+
+// useNavigate 這個 Hook，useNavigate() 可以用在路由的切換，舉例像是進入到個人資訊頁面會先檢查是否有登入，沒有登入的話就會導回 /login。
+const Logout = () => {
+  const navigate = useNavigate();
+  /*
+  按下登出按鈕後，導回navigate('/login')，頁面
+  使用 replace 屬性：在登出或登入的場景，有時候我們不希望使用者點擊瀏覽器的「上一頁」又回到剛才的頁面
+  原本：[首頁] -> [Login] -> [Todo]
+  執行後：[首頁] -> [Login] -> [Todo] -> [Login]（清單變長了）
+  使用replace 屬性
+  原本：[首頁] -> [Login] -> [Todo]
+  執行後：[首頁] -> [Login] -> [Login]（（最後一張 Todo 被抽換成 Login 了）
+  */
+  return <button onClick={() => navigate('/login', { replace: true })}>登出</button>;
+};
 
 const Todo = () => {
-  return <p>這是 Todo 頁面</p>;
+  return (
+    <>
+      <p>這是 Todo 頁面</p>
+      <Logout />
+    </>
+  );
 };
 const Login = () => {
   return <p>這是登入頁面</p>;
